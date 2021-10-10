@@ -1,4 +1,4 @@
-Projeto Final do Curso CCE PUC-Rio - BI MASTER 2019.2
+# Projeto Final do Curso CCE PUC-Rio - BI MASTER 2019.2
 
 Otimização de Custo de Transporte de Combustíveis
 
@@ -40,6 +40,7 @@ Para esta aplicação, iremos utilizar o pacote Python-MIP que fornece ferrament
 Abaixo iremos apresentar o passo a passo dos comandos:
 
 1: Instalação do pacote Python-MIP.
+
 !pip install mip
 
 import matplotlib.pyplot as plt
@@ -48,72 +49,76 @@ from itertools import product
 from mip import Model, xsum, minimize, OptimizationStatus
 
 2: Determinando a quantidade de refinarias, suas posições e suas capacidades produtivas (volume m³).
+
 Refinarias = [1, 2, 3]
 pRefinarias = {1: (38, 180), 2: (95, 165), 3: (80, 60)}
 cRefinarias = {1: 700, 2: 2400, 3: 2200}
 
 
 3: Definição dos clientes (12 clientes), com suas localizações e demandas (volume m³).
+
 Distribuidoras = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 pDistribuidoras = {1: (45, 220), 2: (25, 130), 3: (55, 110), 4: (90, 105), 5: (65, 180), 6: (70, 80), 7: (74, 32), 8: (66, 18), 9: (69, 0), 10: (80, 165), 11: (90, 50), 12: (100, 136)}
 dDistribuidoras = {1: 302, 2: 273, 3: 275, 4: 266, 5: 87, 6: 296, 7: 297, 8: 310, 9: 302, 10: 309, 11: 420, 12: 100}
 
 
 4: Projetando as Refinarias e Distribuidoras
+
 plt.figure(figsize=(7,7))
 plt.title("Mapa :: Refinarias x Distribuidoras")
 plt.xlabel("Distância X")
 plt.ylabel("Distância Y")
 
-# Refinarias
+![image](https://user-images.githubusercontent.com/60948599/136699160-25ed566c-6a66-4e0a-aab6-b90ab44dc901.png)
+
+
 for i, p in pRefinarias.items():
     plt.scatter((p[0]), (p[1]), marker="^", color="green", s=300)
     plt.text((p[0]), (p[1]), "$R_%d$" % i, size=14)
 
-# Clientes
 for i, p in pDistribuidoras.items():
     plt.scatter((p[0]), (p[1]), marker="o", color="brown", s=25)
     plt.text((p[0]), (p[1]), "$D_{%d}$" % i, size=14)
 
  
 5: Cálculo das distâncias entre as Refinarias e as Distribuidoras:
+
 dist = {(f, c): round(sqrt((pRefinarias[f][0] - pDistribuidoras[c][0]) ** 2 + (pRefinarias[f][1] - pDistribuidoras[c][1]) ** 2), 1)
         for (f, c) in product(Refinarias, Distribuidoras) }
 
 6: Criando o modelo MIP:
-modelo = Model()
 
-# Capacidades: adicionando a variável de capacidade no Modelo (usado para limitar quando zerar o estoque)
+modelo = Model()
 zRefinarias = {i: modelo.add_var(ub=cRefinarias[i]) for i in Refinarias} 
 
 7: Definição dos volumes que serão transferidos da Refinaria (i) para a Distribuidora (j): 
-xRefinarias = {(i, j): modelo.add_var() for (i, j) in product(Refinarias, Distribuidoras)}
 
-# Atender a Demanda
+xRefinarias = {(i, j): modelo.add_var() for (i, j) in product(Refinarias, Distribuidoras)}
 for j in Distribuidoras:
     modelo += xsum(xRefinarias[(i, j)] for i in Refinarias) == dDistribuidoras[j]
 
 8: Processamento de capacidade das Refinarias e o consumo das Distribuidoras:
+
 for i in Refinarias:
     modelo += zRefinarias[i] >= xsum(xRefinarias[(i, j)] for j in Distribuidoras)
 
 9: Função Objetivo:
+
 modelo.objective = minimize(
     xsum(dist[i, j] * xRefinarias[i, j] for (i, j) in product(Refinarias, Distribuidoras)) )
 modelo.optimize()
 
 10: Demonstração gráfica do resultado:
+
 plt.figure(figsize=(7,7))
 plt.title("Mapa :: Refinarias x Distrbuidoras")
 plt.xlabel("Distância X")
 plt.ylabel("Distância Y")
 
-# Refinarias
 for i, p in pRefinarias.items():
     plt.scatter((p[0]), (p[1]), marker="^", color="green", s=300)
     plt.text((p[0]), (p[1]), "$R_%d$" % i, size=14)
 
-# Clientes
 for i, p in pDistribuidoras.items():
     plt.scatter((p[0]), (p[1]), marker="o", color="brown", s=25)
     plt.text((p[0]), (p[1]), "$D_{%d}$" % i, size=14)
@@ -122,21 +127,27 @@ if modelo.num_solutions:
     print("Solução com o melhor Custo: {}".format(modelo.objective_value))
     print("Capacidades R1, R2 e R3: {} ".format([zRefinarias[f].x for f in Refinarias]))
 
-    # Plotando as alocações
-    for (i, j) in [(i, j) for (i, j) in product(Refinarias, Distribuidoras) if xRefinarias[(i, j)].x >= 1e-6]:
-        plt.plot(
-            (pRefinarias[i][0], pDistribuidoras[j][0]), (pRefinarias[i][1], pDistribuidoras[j][1]), linestyle="--", color="darkgray"
-        )
+for (i, j) in [(i, j) for (i, j) in product(Refinarias, Distribuidoras) if xRefinarias[(i, j)].x >= 1e-6]:
+    plt.plot(
+        (pRefinarias[i][0], pDistribuidoras[j][0]), (pRefinarias[i][1], pDistribuidoras[j][1]), linestyle="--", color="darkgray"
+    )
 
 3. Resultados
+
 Solução com o melhor Custo: 117136.0
 Capacidades R1, R2 e R3: [700.0, 2400.0, 2200.0]
 
+![image](https://user-images.githubusercontent.com/60948599/136699133-05da4c84-420d-4eaf-8d40-01dfb27bc09a.png)
+
  
 4. Conclusões
+
 O trabalho teve o objetivo de demonstrar como conseguir o melhor resultado em custo com transporte de combustíveis no Brasil, levando em consideração as localizações de origem e destino, bem como as capacidades das refinarias e demanda das distribuidoras.
+
 Iniciamos apresentando o contexto do transporte de combustíveis no Brasil, bem como os modais envolvidos nas operações.
+
 Em seguida, trabalhamos em escolher um pacote de tecnologia que nos apoiasse na solução do problema.
+
 O pacote Python-MIP dispõe de algoritmos inteligentes combinados com uma alta performance de execução. Com ele, conseguimos chegar a um modelo de cálculo que servirá de base para projetos que utilizem dados reais de localização (longitude e latitude), bem como mapeamento completo da malha modal do nosso país. 
 
 
