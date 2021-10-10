@@ -36,7 +36,9 @@ Premissas:
 
 Aplicação e codificação:
 Para esta aplicação, iremos utilizar o pacote Python-MIP que fornece ferramentas para modelagem e solução de Problemas de Programação Linear Inteira Mista (MIPs) em Python. A instalação padrão inclui o COIN-OR Linear Programming Solver - CLP, que é atualmente o solucionador de programação linear de código aberto mais rápido e o solver COIN-OR Branch-and-Cut - CBC, um solver MIP altamente configurável. Ele também funciona com o solver Gurobi MIP de última geração. Python-MIP foi escrito em Python moderno e digitado e funciona com o compilador Python rápido just-in-time Pypy.
+
 Abaixo iremos apresentar o passo a passo dos comandos:
+
 1: Instalação do pacote Python-MIP.
 !pip install mip
 
