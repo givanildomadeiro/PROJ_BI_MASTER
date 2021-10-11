@@ -2,7 +2,7 @@
 
 ### Otimização de Custo de Transporte de Combustíveis
 
-Aluno: Givanildo Madeiro de Souza - Matrícula: 192.190.006
+Aluno: [Givanildo Madeiro](https://github.com/givanildomadeiro) - Matrícula: 192.190.006
 
 Orientador: Felipe Borges
 
