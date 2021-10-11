@@ -1,13 +1,12 @@
 ## Projeto Final do Curso CCE PUC-Rio - BI MASTER 2019.2
 
-### Otimização de Custo de Transporte de Combustíveis
+### Otimização de Custo de Transporte de Combustíveis em Python
 
-Aluno: [Givanildo Madeiro](https://github.com/givanildomadeiro) - Matrícula: 192.190.006
+**Aluno: [Givanildo Madeiro](https://github.com/givanildomadeiro) - Matrícula: 192.190.006**
 
-Orientador: Felipe Borges
+**Orientador: [Felipe Borges](https://github.com/FelipeBorgesC)**
 
-### Trabalho apresentado ao curso BI MASTER como pré-requisito para conclusão de "Curso de Pós Graduação Business Intelligence Master"
-
+**Trabalho apresentado ao curso [BI MASTER](https://ica.puc-rio.ai/es/bi-master-es/) como pré-requisito para conclusão de "Curso de Pós Graduação Business Intelligence Master" na Pontifícia Universidade Católica do Rio de Janeiro**
 
 
 ### **Resumo**
