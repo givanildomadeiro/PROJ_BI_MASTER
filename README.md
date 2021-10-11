@@ -109,7 +109,7 @@ Abaixo iremos apresentar o passo a passo dos comandos:
     for j in Distribuidoras:
         modelo += xsum(xRefinarias[(i, j)] for i in Refinarias) == dDistribuidoras[j]
 
-*2.3.8: Processamento da capacidade das Refinarias e o consumo das Distribuidoras:**
+**2.3.8: Processamento da capacidade das Refinarias e o consumo das Distribuidoras:**
 
     for i in Refinarias:
         modelo += zRefinarias[i] >= xsum(xRefinarias[(i, j)] for j in Distribuidoras)
